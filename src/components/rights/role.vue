@@ -86,17 +86,18 @@
     <el-dialog title="修改权限" :visible.sync="dialogFormVisibleRight">
       <!-- 树形结构 -->
       <el-tree
-        :data="data2"
+        ref="tree"
+        :data="treelist"
         show-checkbox
         node-key="id"
-        :default-expanded-keys="[2, 3]"
-        :default-checked-keys="[5]"
+        default-expand-all
+        :default-checked-keys="arrcheck"
         :props="defaultProps"
       >
       </el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleRight = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisibleRight = false"
+        <el-button type="primary" @click="setRoleRight()"
           >确 定</el-button
         >
       </div>
@@ -110,7 +111,13 @@ export default {
     return {
       rolelist: [],
       dialogFormVisibleRight: false,
-
+      treelist:[],
+      arrcheck:[],
+      currRoleId: -1,
+      defaultProps: {
+        label: 'authName',
+        children: 'children'
+      },
     };
   },
   created() {
@@ -128,10 +135,32 @@ export default {
     },
     /**修改/分配权限-对话框 */
     async showSetRightDia(role) {
+      this.currRoleId = role.id
       const res = await this.$http.get(`rights/tree`)
-      
-      this.dialogFormVisibleRight = true;
+      this.treelist = res.data.data
+      let arritem = []
+      role.children.forEach(item1 => {
+        item1.children.forEach(item2 => {
+          item2.children.forEach(item3 => {
+            arritem.push(item3.id)
+          })
+        })
+      })
+      this.arrcheck = arritem
+      this.dialogFormVisibleRight = true
     },
+    /***修改权限-发送请求 */
+    async setRoleRight() {
+      //获取全选id的数组arr1  getCheckedKeys(), 通过ref获取el-tree
+      let arr1 = this.$refs.tree.getCheckedKeys()
+      //获取半选id的数组arr2
+      let arr2 = this.$refs.tree.getHalfCheckedKeys()
+      let arr = [...arr1, ...arr2]
+      console.log(arr)
+      const res = await this.$http.post(`roles/${this.currRoleId}/rights`,{rids:arr.join(',')})
+      this.getRoleList()
+      this.dialogFormVisibleRight = false
+    }
   },
 };
 </script>
