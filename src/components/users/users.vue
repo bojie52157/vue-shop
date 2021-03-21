@@ -174,7 +174,7 @@ export default {
     return {
       query: "",
       pagenum: 1,
-      pagesize: 2,
+      pagesize: 12,
       total: 0,
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {Message} from 'element-ui';
+import {
+  Message
+} from 'element-ui';
 
 /**组件 */
 import Login from '@/components/login/login.vue'
@@ -8,6 +10,10 @@ import Home from '@/components/home/home.vue'
 import Users from '@/components/users/users.vue'
 import Rights from '@/components/rights/right.vue'
 import Role from '../components/rights/role.vue'
+import Goods from '../components/goods/goods.vue';
+import Params from '../components/goods/params.vue'
+import Categories from '../components/goods/categories.vue'
+import GoodsAdd from '../components/goods/goodsAdd.vue'
 
 
 Vue.use(Router)
@@ -36,6 +42,26 @@ const router = new Router({
           name: 'roles',
           path: '/roles',
           component: Role
+        },
+        {
+          name: 'goods',
+          path: '/goods',
+          component: Goods
+        },
+        {
+          name: 'params',
+          path: '/params',
+          component: Params
+        },
+        {
+          name: 'categories',
+          path: '/categories',
+          component: Categories
+        },
+        {
+          name: 'goodsAdd',
+          path: '/goodsAdd',
+          component: GoodsAdd
         }
       ]
     }
